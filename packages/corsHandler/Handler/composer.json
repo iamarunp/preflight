@@ -1,0 +1,12 @@
+{
+    "name": "dev707/handler",
+    "description": "CORS-Handler",
+    "authors": [
+        {
+            "name": "Arun P",
+            "email": "ar.dev.mac@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
