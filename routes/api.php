@@ -14,6 +14,9 @@
 Route::post('/option', function () {
     return ('welcome');
 })->middleware('Chandler');
+Route::get('/option', function () {
+    return ('welcome');
+})->middleware('Chandler');
 Route::get('/get', function () {
     return ('welcome');
 })->middleware('Chandler');
@@ -34,6 +37,6 @@ Route::post('/post1', function () {
 Route::post('/post2', function () {
     return ('welcome');
 })->middleware('Chandler');
-Route::post('/post3', function () {
+Route::get('/post3', function () {
     return ('welcome');
 })->middleware('Chandler');

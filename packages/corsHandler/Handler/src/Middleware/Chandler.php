@@ -3,6 +3,7 @@
 namespace corsHandler\Handler\Middleware;
 
 use Closure;
+use Response;
 
 class Chandler
 {
@@ -21,7 +22,6 @@ class Chandler
         $slugs = [];
         $request_headers = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTION'];
 
-        // dd(\Route::getRoutes());
         $routes = \Route::getRoutes()->getRoutesByMethod();
         // dd($request->header());
         // dd($routes['GET']);
@@ -32,11 +32,30 @@ class Chandler
         $request_accept = $request->header('accept');
         if (in_array($request_access_control_request_method, $request_headers)) {
             $method_routes = $routes[$request_access_control_request_method];
+            // dd(["sdss", $method_routes]);
 
-            dd($method_routes[ltrim($request->getPathInfo(), $request->getPathInfo()[0])]);
+            // dd($method_routes[ltrim($request->getPathInfo(), $request->getPathInfo()[0])]);
 
-            if (isset($method_routes[$request->getPathInfo()])) {
-                dd($method_routes);
+            if (isset($method_routes[ltrim($request->getPathInfo(), '/')])) {
+                // dd($request->getPathInfo());
+                // dd($routes);
+                $allowed_methods = [];
+                foreach ($request_headers as $key => $verb) {
+                    # code...
+                    foreach ($routes as $key => $value) {
+                        # code...
+                        if (isset($routes[$verb])) {
+                            if (isset($routes[$verb][ltrim($request->getPathInfo(), '/')])) {
+                                $allowed_methods[] = $verb;
+
+                            }
+                        }
+                    }
+
+                }
+                return Response::make(null, 200, ['Allow' => implode(',', array_unique($allowed_methods)), 'Access-Control-Request-Method' => implode(',', array_unique($allowed_methods))]);
+
+                dd(["verbs", array_unique($allowed_methods)]);
 
             }
 
@@ -45,7 +64,7 @@ class Chandler
         //     $slugs[] = $route->uri();
         // }
 
-        dd($request->getPathInfo());
+        dd(["Return", $request->getPathInfo()]);
 
         return $next($request);
     }
