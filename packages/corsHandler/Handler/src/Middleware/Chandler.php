@@ -19,8 +19,33 @@ class Chandler
     public function handle($request, Closure $next)
     {
 
+        /*
+
+        Route::group(['middleware' => 'role:webdev|admin'], function () {
+        });
+        public function handle($request, Closure $next, $role)
+        {
+        $roles = explode('|',$role);
+        if (! $request->user()->hasRole($roles)) {
+        abort(404, 'No Way');
+        }
+        return $next($request);
+        }
+        Snapey
+        Level 50
+        Snapey
+        •
+        3 years ago
+        $roles = collect(explode('|',$role));
+
+         */
+
         $slugs = [];
         $request_headers = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTION'];
+
+        $AllowedOrigins = \Config::get('CORS_handler_config.AllowedOrigins');
+        $AllowedHeaders = \Config::get('CORS_handler_config.AllowedHeaders');
+        $MaxAge = \Config::get('CORS_handler_config.MaxAge');
 
         $routes = \Route::getRoutes()->getRoutesByMethod();
         // dd($request->header());
@@ -53,6 +78,8 @@ class Chandler
                     }
 
                 }
+                // dd();
+
                 return Response::make(null, 200, ['Allow' => implode(',', array_unique($allowed_methods)), 'Access-Control-Request-Method' => implode(',', array_unique($allowed_methods))]);
 
                 dd(["verbs", array_unique($allowed_methods)]);
