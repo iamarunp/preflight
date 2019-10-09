@@ -18,6 +18,8 @@ class Chandler
     public $errors;
     public function handle($request, Closure $next)
     {
+        // dd("asd");
+        if ($request->getMethod() === "OPTIONS") {
 
         /*
 
@@ -82,7 +84,7 @@ class Chandler
 
                 return Response::make(null, 200, ['Allow' => implode(',', array_unique($allowed_methods)), 'Access-Control-Request-Method' => implode(',', array_unique($allowed_methods))]);
 
-                dd(["verbs", array_unique($allowed_methods)]);
+                // dd(["verbs", array_unique($allowed_methods)]);
 
             }
 
@@ -91,7 +93,8 @@ class Chandler
         //     $slugs[] = $route->uri();
         // }
 
-        dd(["Return", $request->getPathInfo()]);
+        // dd(["Return", $request->getPathInfo()]);
+    }
 
         return $next($request);
     }
